@@ -28,7 +28,11 @@ public class customerController {
     }
 
     @GetMapping("/list")
-    public String getAll(){     // find all -> http://localhost:8001/api/v1/customers/list [Get]
+    public String getAll(
+            @RequestParam String searchText,
+            @RequestParam int page,
+            @RequestParam int size
+    ){     // find all -> http://localhost:8001/api/v1/customers/list [Get]
         return "getAll()";
     }
 }
