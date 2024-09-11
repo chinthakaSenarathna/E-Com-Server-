@@ -1,32 +1,34 @@
 package com.example.E_Com.api;
 
+import com.example.E_Com.dto.request.RequestCustomerDto;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/customers")
 public class customerController {
     @PostMapping()
-    public String create(){     // save data -> http://localhost:8001/api/v1/customers [Post]
+    public String create(@RequestBody RequestCustomerDto requestCustomerDto){     // save data -> http://localhost:8001/api/v1/customers [Post]
+        System.out.println(requestCustomerDto.getName());
         return "create()";
     }
 
     @PutMapping()
-    public String update(){     // update all data -> http://localhost:8001/api/v1/customers [Put]
+    public String update(@RequestBody RequestCustomerDto requestCustomerDto){     // update all data -> http://localhost:8001/api/v1/customers [Put]
         return "update()";
     }
 
-    @GetMapping()
-    public String getById(){    // find data -> http://localhost:8001/api/v1/customers [Get]
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable String id){     // delete data -> http://localhost:8001/api/v1/customers [Delete]
+        return "delete()";
+    }
+
+    @GetMapping("/{id}")
+    public String getById(@PathVariable String id){    // find data -> http://localhost:8001/api/v1/customers [Get]
         return "getById()";
     }
 
     @GetMapping("/list")
     public String getAll(){     // find all -> http://localhost:8001/api/v1/customers/list [Get]
         return "getAll()";
-    }
-
-    @DeleteMapping()
-    public String delete(){     // delete data -> http://localhost:8001/api/v1/customers [Delete]
-        return "delete()";
     }
 }
