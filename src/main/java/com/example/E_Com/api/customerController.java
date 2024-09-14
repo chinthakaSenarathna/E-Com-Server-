@@ -12,8 +12,9 @@ public class customerController {
         return "create()";
     }
 
-    @PutMapping()
-    public String update(@RequestBody RequestCustomerDto requestCustomerDto){     // update all data -> http://localhost:8001/api/v1/customers [Put]
+    @PutMapping("/{id}")
+    public String update(@PathVariable String id, @RequestBody RequestCustomerDto requestCustomerDto){     // update all data -> http://localhost:8001/api/v1/customers [Put]
+        System.out.println(requestCustomerDto.getName());
         return "update()";
     }
 
