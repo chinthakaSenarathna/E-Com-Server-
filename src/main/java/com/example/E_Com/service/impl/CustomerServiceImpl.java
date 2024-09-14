@@ -9,6 +9,7 @@ import com.example.E_Com.service.CustomerService;
 import com.example.E_Com.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerPaginateDto getAll(String searchText, int page, int size) {
-        return null;
+        return CustomerPaginateDto.builder()
+                .count(customerRepository.countAllWithSearchText(searchText))
+                .dataList(customerRepository.findAllWithSearchText(searchText, PageRequest.of(page,size))
+                        .stream().map(this::toResponseCustomerDto).toList())
+                .build();
     }
 
     // mapped the given Customer Entity with ResponseCustomerDto

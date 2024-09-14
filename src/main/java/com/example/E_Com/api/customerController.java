@@ -47,11 +47,14 @@ public class customerController {
     }
 
     @GetMapping("/list")
-    public String getAll(
+    public ResponseEntity<StandardResponse> getAll(
             @RequestParam String searchText,
             @RequestParam int page,
             @RequestParam int size
     ){     // find all -> http://localhost:8001/api/v1/customers/list [Get]
-        return "getAll()";
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Customer List...",customerService.getAll(searchText,page,size)),
+                HttpStatus.OK
+        );
     }
 }
