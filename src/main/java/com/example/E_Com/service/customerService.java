@@ -11,4 +11,5 @@ public interface CustomerService {
     public ResponseCustomerDto getById(String id);
     public void update(String id, RequestCustomerDto requestCustomerDto);
     public CustomerPaginateDto getAll(String searchText, int page, int size);
+    public void delete(String id);
 }

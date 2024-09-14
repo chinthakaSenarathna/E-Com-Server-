@@ -78,6 +78,11 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
+    @Override
+    public void delete(String id) {
+        customerRepository.deleteById(id);
+    }
+
     // mapped the given Customer Entity with ResponseCustomerDto
     private ResponseCustomerDto toResponseCustomerDto(Customer customer){
         return ResponseCustomerDto.builder()

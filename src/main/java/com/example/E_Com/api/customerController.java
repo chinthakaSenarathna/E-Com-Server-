@@ -34,8 +34,12 @@ public class customerController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable String id){     // delete data -> http://localhost:8001/api/v1/customers [Delete]
-        return "delete()";
+    public ResponseEntity<StandardResponse> delete(@PathVariable String id){     // delete data -> http://localhost:8001/api/v1/customers [Delete]
+        customerService.delete(id);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Customer was Deleted!...", null),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{id}")
