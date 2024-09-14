@@ -37,7 +37,10 @@ public class customerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getById(@PathVariable String id){    // find data -> http://localhost:8001/api/v1/customers [Get]
-        return customerService.getById(id);
+        return new ResponseEntity<>(
+                new StandardResponse(302, "customer was founded!...",customerService.getById(id)),
+                HttpStatus.FOUND
+        );
     }
 
     @GetMapping("/list")

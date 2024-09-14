@@ -1,6 +1,7 @@
 package com.example.E_Com.service.impl;
 
 import com.example.E_Com.dto.request.RequestCustomerDto;
+import com.example.E_Com.dto.response.ResponseCustomerDto;
 import com.example.E_Com.entity.Customer;
 import com.example.E_Com.repo.CustomerRepository;
 import com.example.E_Com.service.CustomerService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,17 +44,25 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<StandardResponse> getById(String id) {
-        if(!customerRepository.existsById(id)){
-            return new ResponseEntity<>(
-                    new StandardResponse(404, "customer was not founded",null),
-                    HttpStatus.NOT_FOUND
-            );
+    public ResponseCustomerDto getById(String id) {
+        // avoid the NullPointException -> if not exist data, given null
+        Optional<Customer> selectedCustomer = customerRepository.findById(id);
+
+        if(selectedCustomer.isEmpty()){
+            throw new RuntimeException("Customer Not Found");
         }
 
-        return new ResponseEntity<>(
-                new StandardResponse(302, "customer was founded!...",customerRepository.findById(id)),
-                HttpStatus.FOUND
-        );
+        return getCustomerObject(selectedCustomer.get());
+    }
+
+    private ResponseCustomerDto getCustomerObject(Customer customer){
+        return ResponseCustomerDto.builder()
+                .propertyId(customer.getPropertyId())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .phoneNo(customer.getPhoneNo())
+                .address(customer.getAddress())
+                .isActive(customer.isActive())
+                .build();
     }
 }
