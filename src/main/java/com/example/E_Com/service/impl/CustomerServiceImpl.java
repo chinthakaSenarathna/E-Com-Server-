@@ -4,6 +4,7 @@ import com.example.E_Com.dto.request.RequestCustomerDto;
 import com.example.E_Com.dto.response.ResponseCustomerDto;
 import com.example.E_Com.dto.response.paginate.CustomerPaginateDto;
 import com.example.E_Com.entity.Customer;
+import com.example.E_Com.exception.EntryNotFoundException;
 import com.example.E_Com.repo.CustomerRepository;
 import com.example.E_Com.service.CustomerService;
 import com.example.E_Com.util.StandardResponse;
@@ -44,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> selectedCustomer = customerRepository.findById(id);
 
         if(selectedCustomer.isEmpty()){
-            throw new RuntimeException("Customer Not Found");
+            throw new EntryNotFoundException("Customer Not Found");
         }
 
         return toResponseCustomerDto(selectedCustomer.get());
@@ -55,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> selectedCustomer = customerRepository.findById(id);
 
         if(selectedCustomer.isEmpty()){
-            throw new RuntimeException("Customer not Exist");
+            throw new EntryNotFoundException("Customer not Exist");
         }
 
         Customer customer = selectedCustomer.get();

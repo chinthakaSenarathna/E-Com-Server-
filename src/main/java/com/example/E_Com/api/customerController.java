@@ -37,8 +37,8 @@ public class customerController {
     public ResponseEntity<StandardResponse> delete(@PathVariable String id){     // delete data -> http://localhost:8001/api/v1/customers [Delete]
         customerService.delete(id);
         return new ResponseEntity<>(
-                new StandardResponse(200, "Customer was Deleted!...", null),
-                HttpStatus.OK
+                new StandardResponse(204, "Customer was Deleted!...", null),
+                HttpStatus.NO_CONTENT
         );
     }
 
