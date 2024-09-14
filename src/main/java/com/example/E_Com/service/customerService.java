@@ -8,4 +8,5 @@ import org.springframework.http.ResponseEntity;
 public interface CustomerService {
     public void create(RequestCustomerDto requestCustomerDto);
     public ResponseCustomerDto getById(String id);
+    public void update(String id, RequestCustomerDto requestCustomerDto);
 }

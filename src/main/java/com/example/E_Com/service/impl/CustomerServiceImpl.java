@@ -22,11 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
     // when project is run, customerRepository assign as instance
     private final CustomerRepository customerRepository;
 
-//    @Autowired
-//    public CustomerServiceImpl(CustomerRepository customerRepository){
-//        this.customerRepository = customerRepository;
-//    }
-
     @Override
     public void create(RequestCustomerDto requestCustomerDto) {
         System.out.println(requestCustomerDto.isActive());
@@ -55,6 +50,26 @@ public class CustomerServiceImpl implements CustomerService {
         return getCustomerObject(selectedCustomer.get());
     }
 
+    @Override
+    public void update(String id, RequestCustomerDto requestCustomerDto) {
+        Optional<Customer> selectedCustomer = customerRepository.findById(id);
+
+        if(selectedCustomer.isEmpty()){
+            throw new RuntimeException("Customer not Exist");
+        }
+
+        Customer customer = selectedCustomer.get();
+
+        customer.setName(requestCustomerDto.getName());
+        customer.setEmail(requestCustomerDto.getEmail());
+        customer.setPhoneNo(requestCustomerDto.getPhoneNo());
+        customer.setAddress(requestCustomerDto.getAddress());
+        customer.setActive(requestCustomerDto.isActive());
+
+        customerRepository.save(customer);
+    }
+
+    // mapped the given Customer Entity with ResponseCustomerDto
     private ResponseCustomerDto getCustomerObject(Customer customer){
         return ResponseCustomerDto.builder()
                 .propertyId(customer.getPropertyId())

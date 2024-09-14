@@ -25,9 +25,12 @@ public class customerController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable String id, @RequestBody RequestCustomerDto requestCustomerDto){     // update all data -> http://localhost:8001/api/v1/customers [Put]
-        System.out.println(requestCustomerDto.getName());
-        return "update()";
+    public ResponseEntity<StandardResponse> update(@PathVariable String id, @RequestBody RequestCustomerDto requestCustomerDto){     // update all data -> http://localhost:8001/api/v1/customers [Put]
+        customerService.update(id, requestCustomerDto);
+        return new ResponseEntity<>(
+                new StandardResponse(201, "Customer was Updated!...", null),
+                HttpStatus.CREATED
+        );
     }
 
     @DeleteMapping("/{id}")
@@ -38,8 +41,8 @@ public class customerController {
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getById(@PathVariable String id){    // find data -> http://localhost:8001/api/v1/customers [Get]
         return new ResponseEntity<>(
-                new StandardResponse(302, "customer was founded!...",customerService.getById(id)),
-                HttpStatus.FOUND
+                new StandardResponse(200, "customer was founded!...",customerService.getById(id)),
+                HttpStatus.OK
         );
     }
 
