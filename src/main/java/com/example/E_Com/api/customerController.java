@@ -1,14 +1,20 @@
 package com.example.E_Com.api;
 
 import com.example.E_Com.dto.request.RequestCustomerDto;
+import com.example.E_Com.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/customers")
+@RequiredArgsConstructor
 public class customerController {
+
+    private final CustomerService customerService;
+
     @PostMapping()
     public String create(@RequestBody RequestCustomerDto requestCustomerDto){     // save data -> http://localhost:8001/api/v1/customers [Post]
-        System.out.println(requestCustomerDto.getName());
+        customerService.create(requestCustomerDto);
         return "create()";
     }
 
