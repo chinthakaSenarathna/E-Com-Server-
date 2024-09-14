@@ -5,6 +5,7 @@ import com.example.E_Com.entity.Customer;
 import com.example.E_Com.repo.CustomerRepository;
 import com.example.E_Com.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,7 +14,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
+    // when project is run, customerRepository assign as instance
     private final CustomerRepository customerRepository;
+
+//    @Autowired
+//    public CustomerServiceImpl(CustomerRepository customerRepository){
+//        this.customerRepository = customerRepository;
+//    }
 
     @Override
     public void create(RequestCustomerDto requestCustomerDto) {
