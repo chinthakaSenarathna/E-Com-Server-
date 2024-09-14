@@ -36,8 +36,8 @@ public class customerController {
     }
 
     @GetMapping("/{id}")
-    public String getById(@PathVariable String id){    // find data -> http://localhost:8001/api/v1/customers [Get]
-        return "getById()";
+    public ResponseEntity<StandardResponse> getById(@PathVariable String id){    // find data -> http://localhost:8001/api/v1/customers [Get]
+        return customerService.getById(id);
     }
 
     @GetMapping("/list")
