@@ -2,6 +2,7 @@ package com.example.E_Com.service.impl;
 
 import com.example.E_Com.dto.request.RequestCustomerDto;
 import com.example.E_Com.dto.response.ResponseCustomerDto;
+import com.example.E_Com.dto.response.paginate.CustomerPaginateDto;
 import com.example.E_Com.entity.Customer;
 import com.example.E_Com.repo.CustomerRepository;
 import com.example.E_Com.service.CustomerService;
@@ -24,8 +25,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void create(RequestCustomerDto requestCustomerDto) {
-        System.out.println(requestCustomerDto.isActive());
-
         Customer customer = Customer.builder()
                 .propertyId(UUID.randomUUID().toString())
                 .name(requestCustomerDto.getName())
@@ -47,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new RuntimeException("Customer Not Found");
         }
 
-        return getCustomerObject(selectedCustomer.get());
+        return toResponseCustomerDto(selectedCustomer.get());
     }
 
     @Override
@@ -69,8 +68,13 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
     }
 
+    @Override
+    public CustomerPaginateDto getAll(String searchText, int page, int size) {
+        return null;
+    }
+
     // mapped the given Customer Entity with ResponseCustomerDto
-    private ResponseCustomerDto getCustomerObject(Customer customer){
+    private ResponseCustomerDto toResponseCustomerDto(Customer customer){
         return ResponseCustomerDto.builder()
                 .propertyId(customer.getPropertyId())
                 .name(customer.getName())
