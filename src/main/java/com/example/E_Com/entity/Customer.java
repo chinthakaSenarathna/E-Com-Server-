@@ -3,16 +3,14 @@ package com.example.E_Com.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity( name = "customer" )
+@Builder
 public class Customer {
     @Id
     @Column( name = "property_id", length = 80, nullable = false )
