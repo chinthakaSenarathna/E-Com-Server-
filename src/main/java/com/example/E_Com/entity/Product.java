@@ -1,10 +1,9 @@
 package com.example.E_com.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Getter
@@ -26,4 +25,8 @@ public class Product {
 
     @Column( name = "description", length = 255 )
     private String description;
+
+//    relation
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private HashSet<ProductImage> images = new HashSet<>();
 }
