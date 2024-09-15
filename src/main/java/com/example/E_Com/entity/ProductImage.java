@@ -14,6 +14,16 @@ public class ProductImage {
     @Column( name = "property_id", length = 80, nullable = false )
     private String propertyId;
 
+//    Large object in Binary
+    @Lob
+    private byte[] directory;
+    @Lob
+    private byte[] resourceUrl;
+    @Lob
+    private byte[] hash;
+    @Lob
+    private byte[] fileNme;
+
 //    relation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "property_id")
