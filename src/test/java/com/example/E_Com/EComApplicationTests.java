@@ -1,4 +1,4 @@
-package com.example.E_Com;
+package com.example.E_com;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
