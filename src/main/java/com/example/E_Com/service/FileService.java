@@ -6,4 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
     public CommonFileSavedBinaryDataDto create(MultipartFile file, String directory, String bucket);
     public void delete(String fileName, String directory, String bucket);
+    public byte[] download(String bucket, String fileName);
 }
