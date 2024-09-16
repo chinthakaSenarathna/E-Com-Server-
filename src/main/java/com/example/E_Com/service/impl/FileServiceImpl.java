@@ -1,15 +1,16 @@
 package com.example.E_com.service.impl;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
-import com.amazonaws.util.IOUtils;
-import com.example.E_com.service.FileService;
-import com.example.E_com.util.CommonFileSavedBinaryDataDto;
-import com.example.E_com.util.ImageUploadGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseTransformer;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
+
+import com.example.E_com.service.FileService;
+import com.example.E_com.util.CommonFileSavedBinaryDataDto;
+import com.example.E_com.util.ImageUploadGenerator;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
@@ -19,42 +20,51 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
-    private final AmazonS3 s3;
-    private final AmazonS3Client s3Client;
+
+    private final S3Client s3Client;
     private final ImageUploadGenerator imageUploadGenerator;
 
     @Override
     public CommonFileSavedBinaryDataDto create(MultipartFile file, String directory, String bucket) {
-        try{
-            String orginalFilename =  file.getOriginalFilename();
-            String newFileName = imageUploadGenerator.generateDevelopersStackResourceName(orginalFilename, UUID.randomUUID().toString());
-            PutObjectResult putObjectResult = s3Client.putObject(new PutObjectRequest(bucket, directory + "" + newFileName, file.getInputStream(),
-                    new ObjectMetadata()).withCannedAcl(CannedAccessControlList.PublicRead));
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String newFileName = imageUploadGenerator.generateDevelopersStackResourceName(originalFilename, UUID.randomUUID().toString());
+
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(directory + newFileName)
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
+
+            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
             return new CommonFileSavedBinaryDataDto(
-                    new SerialBlob(putObjectResult.getContentMd5().getBytes()),
+                    new SerialBlob(newFileName.getBytes()),
                     directory,
                     new SerialBlob(newFileName.getBytes()),
-                    new SerialBlob(s3Client.getResourceUrl(bucket, directory + newFileName).getBytes()));
+                    new SerialBlob(s3Client.utilities().getUrl(builder -> builder.bucket(bucket).key(directory + newFileName)).toString().getBytes())
+            );
 
-        } catch(SQLException | IOException e){
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(String fileName, String directory, String bucket) {
-        s3Client.deleteObject(bucket, directory + fileName);
+        s3Client.deleteObject(DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(directory + fileName)
+                .build());
     }
 
     @Override
     public byte[] download(String bucket, String fileName) {
-        S3Object object = s3.getObject(bucket,fileName);
-        S3ObjectInputStream objectContent = object.getObjectContent();
-        try{
-            return IOUtils.toByteArray(objectContent);
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(fileName)
+                .build();
+
+        return s3Client.getObject(getObjectRequest, ResponseTransformer.toBytes()).asByteArray();
     }
 }
