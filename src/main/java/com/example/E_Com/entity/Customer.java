@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,5 +34,5 @@ public class Customer {
 
 //    relation
     @OneToMany( mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    private HashSet<CustomerOrder> customerOrders = new HashSet<>();
+    private Set<CustomerOrder> customerOrders = new HashSet<>();
 }

@@ -16,12 +16,19 @@ public class ProductImage {
 
 //    Large object in Binary
     @Lob
+    @Column( name = "directory", nullable = false )
     private byte[] directory;
+
     @Lob
+    @Column( name = "resourceUrl", nullable = false )
     private byte[] resourceUrl;
+
     @Lob
+    @Column( name = "hash", nullable = false )
     private byte[] hash;
+
     @Lob
+    @Column( name = "file_name", nullable = false )
     private byte[] fileNme;
 
 //    relation

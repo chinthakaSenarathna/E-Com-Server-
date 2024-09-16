@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,5 +37,5 @@ public class CustomerOrder {
     private Customer customer;
 
     @OneToMany( mappedBy = "customerOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    private HashSet<CustomerOrderProduct> customerOrderProducts = new HashSet<>();
+    private Set<CustomerOrderProduct> customerOrderProducts = new HashSet<>();
 }
