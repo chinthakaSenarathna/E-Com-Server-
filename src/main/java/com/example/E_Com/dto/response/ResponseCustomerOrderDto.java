@@ -17,4 +17,5 @@ public class ResponseCustomerOrderDto {
     private double totalAmount;
     List<ResponseCustomerOrderProductDto> orderProducts;
     private PaymentType paymentType;
+    private String customer;
 }
