@@ -25,9 +25,6 @@ public class CustomerOrder {
     @Column( name = "total_amount" )
     private double totalAmount;
 
-    @Column( name = "quantity" )
-    private int qty;
-
     @Column( name = "payment_type" )
     private PaymentType paymentType;
 

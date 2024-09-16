@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity( name = "customer_order_product" )
+@IdClass(CustomerOrderProduct.class)
 public class CustomerOrderProduct {
     @Id
     @ManyToOne( fetch = FetchType.LAZY )
@@ -19,4 +20,7 @@ public class CustomerOrderProduct {
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "product_id", referencedColumnName = "property_id" )
     private Product product;
+
+    @Column( name = "quantity" )
+    private int qty;
 }
