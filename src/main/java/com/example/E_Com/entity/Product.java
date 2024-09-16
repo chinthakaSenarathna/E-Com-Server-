@@ -27,6 +27,9 @@ public class Product {
     private String description;
 
 //    relation
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private HashSet<ProductImage> images = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    private HashSet<CustomerOrderProduct> customerOrderProducts = new HashSet<>();
 }

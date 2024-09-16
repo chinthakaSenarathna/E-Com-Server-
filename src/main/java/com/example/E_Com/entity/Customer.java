@@ -1,9 +1,9 @@
 package com.example.E_com.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
 
 @Getter
 @Setter
@@ -30,4 +30,8 @@ public class Customer {
 
     @Column( name = "is_active", columnDefinition = "TINYINT" )
     private boolean isActive;
+
+//    relation
+    @OneToMany( mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    private HashSet<CustomerOrder> customerOrders = new HashSet<>();
 }
