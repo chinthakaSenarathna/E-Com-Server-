@@ -27,6 +27,9 @@ public class Product {
     @Column( name = "description", length = 255 )
     private String description;
 
+    @Column( name = "is_available", columnDefinition = "TINYINT" )
+    private boolean isAvailable;
+
 //    relation
     @OneToMany( mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Set<ProductImage> images = new HashSet<>();

@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity( name = "customer_order_product" )
-@IdClass(CustomerOrderProduct.class)
+@IdClass(CustomerOrderProductId.class)
 public class CustomerOrderProduct {
     @Id
     @ManyToOne( fetch = FetchType.LAZY )
