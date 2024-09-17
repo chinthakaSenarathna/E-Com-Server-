@@ -7,7 +7,7 @@ import com.example.E_com.dto.response.paginate.ProductPaginateDto;
 public interface ProductService {
     public void create(RequestProductDto requestProductDto);
     public ResponseProductDto getById(String id);
-    public void update(String id,ResponseProductDto responseProductDto);
+    public void update(String id,RequestProductDto requestProductDto);
     public ProductPaginateDto getAll(String searchText, int page, int size);
     public void delete(String id);
 }

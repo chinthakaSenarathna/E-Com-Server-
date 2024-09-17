@@ -29,7 +29,7 @@ public class Product {
 
 //    relation
     @OneToMany( mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    private HashSet<ProductImage> images = new HashSet<>();
+    private Set<ProductImage> images = new HashSet<>();
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Set<CustomerOrderProduct> customerOrderProducts = new HashSet<>();

@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void update(String id, ResponseProductDto responseProductDto) {
+    public void update(String id, RequestProductDto requestProductDto) {
         Optional<Product> selectedProduct = productRepository.findById(id);
 
         if(selectedProduct.isEmpty()){
@@ -54,9 +54,9 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = selectedProduct.get();
 
-        product.setUnitPrice(responseProductDto.getUnitPrice());
-        product.setUnitPrice(responseProductDto.getUnitPrice());
-        product.setDescription(responseProductDto.getDescription());
+        product.setUnitPrice(requestProductDto.getUnitPrice());
+        product.setQty(requestProductDto.getQty());
+        product.setDescription(requestProductDto.getDescription());
 
         productRepository.save(product);
 
