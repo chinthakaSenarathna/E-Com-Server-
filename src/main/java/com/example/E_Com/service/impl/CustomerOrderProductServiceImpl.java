@@ -2,6 +2,7 @@ package com.example.E_com.service.impl;
 
 import com.example.E_com.dto.request.RequestCustomerOrderDto;
 import com.example.E_com.dto.request.RequestCustomerOrderProductDto;
+import com.example.E_com.dto.response.ResponseCustomerOrderProductDto;
 import com.example.E_com.entity.Customer;
 import com.example.E_com.entity.CustomerOrder;
 import com.example.E_com.entity.CustomerOrderProduct;
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerOrderProductServiceImpl implements CustomerOrderProductService {
     private final CustomerOrderProductRepository customerOrderProductRepository;
-    private final ProductRepository productRepository;
 
     @Override
     public void create(List<RequestCustomerOrderProductDto> requestCustomerOrderProducts, CustomerOrder customerOrder, List<Product> validProducts) {
@@ -36,5 +36,19 @@ public class CustomerOrderProductServiceImpl implements CustomerOrderProductServ
 
             customerOrderProductRepository.save(customerOrderProduct);
         }
+    }
+
+    @Override
+    public List<ResponseCustomerOrderProductDto> getById(String id) {
+        List<CustomerOrderProduct> customerOrderProducts = customerOrderProductRepository.findByCustomerOrder_PropertyId(id);
+
+        return customerOrderProducts.stream().map(this::toResponseCustomerOrderProductDto).toList();
+    }
+
+    private ResponseCustomerOrderProductDto toResponseCustomerOrderProductDto(CustomerOrderProduct customerOrderProduct){
+        return ResponseCustomerOrderProductDto.builder()
+                .propertyId(customerOrderProduct.getProduct().toString())
+                .qty(customerOrderProduct.getQty())
+                .build();
     }
 }

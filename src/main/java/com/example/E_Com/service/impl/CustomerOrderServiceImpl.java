@@ -7,11 +7,9 @@ import com.example.E_com.dto.response.ResponseCustomerOrderProductDto;
 import com.example.E_com.dto.response.paginate.CustomerOrderPaginateDto;
 import com.example.E_com.entity.Customer;
 import com.example.E_com.entity.CustomerOrder;
-import com.example.E_com.entity.CustomerOrderProduct;
 import com.example.E_com.entity.Product;
 import com.example.E_com.exception.EntryNotFoundException;
 import com.example.E_com.exception.ProductNotAvailableException;
-import com.example.E_com.repo.CustomerOrderProductRepository;
 import com.example.E_com.repo.CustomerOrderRepository;
 import com.example.E_com.repo.CustomerRepository;
 import com.example.E_com.repo.ProductRepository;
@@ -19,6 +17,7 @@ import com.example.E_com.service.CustomerOrderProductService;
 import com.example.E_com.service.CustomerOrderService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,7 +61,15 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public ResponseCustomerOrderDto getById(String id) {
-        return null;
+        Optional<CustomerOrder> selectedCustomerOrder = customerOrderRepository.findById(id);
+
+        if(selectedCustomerOrder.isEmpty()){
+            throw new EntryNotFoundException("Customer Order Not Exist...");
+        }
+
+        List<ResponseCustomerOrderProductDto> customerOrderProducts = customerOrderProductService.getById(id);
+
+        return toResponseCustomerOrderDto(selectedCustomerOrder.get(),customerOrderProducts);
     }
 
     @Override
@@ -72,12 +79,25 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public CustomerOrderPaginateDto getAll(String id, int page, int size) {
-        return null;
+        Optional<Customer> selectedCustomer = customerRepository.findById(id);
+
+        if(selectedCustomer.isEmpty()){
+            throw new EntryNotFoundException("Customer Not Exist...");
+        }
+
+        return CustomerOrderPaginateDto.builder()
+                .count(customerOrderRepository.countAllWithSearchText(id))
+                .dataList(customerOrderRepository.findAllWithSearchText(id, PageRequest.of(page,size))
+                        .stream().map(e -> {
+                            List<ResponseCustomerOrderProductDto> o= customerOrderProductService.getById(e.getPropertyId());
+                            return toResponseCustomerOrderDto(e,o);
+                        }).toList())
+                .build();
     }
 
     @Override
     public void delete(String id) {
-
+        customerOrderRepository.deleteById(id);
     }
 
     private List<Product> checkAvailability(List<RequestCustomerOrderProductDto> orderProducts){
@@ -100,6 +120,17 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         }
 
         return validProducts;
+    }
+
+    private ResponseCustomerOrderDto toResponseCustomerOrderDto(CustomerOrder customerOrder, List<ResponseCustomerOrderProductDto> responseCustomerOrderProductDto){
+        return ResponseCustomerOrderDto.builder()
+                .propertyId(customerOrder.getPropertyId())
+                .createdDate(customerOrder.getCreatedDate())
+                .totalAmount(customerOrder.getTotalAmount())
+                .orderProducts(responseCustomerOrderProductDto)
+                .paymentType(customerOrder.getPaymentType())
+                .customer(customerOrder.getCustomer().toString())
+                .build();
     }
 
 }

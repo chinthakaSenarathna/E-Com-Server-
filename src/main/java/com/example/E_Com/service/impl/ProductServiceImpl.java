@@ -2,22 +2,28 @@ package com.example.E_com.service.impl;
 
 import com.example.E_com.dto.request.RequestProductDto;
 import com.example.E_com.dto.response.ResponseProductDto;
+import com.example.E_com.dto.response.ResponseProductImageDto;
 import com.example.E_com.dto.response.paginate.ProductPaginateDto;
 import com.example.E_com.entity.Product;
+import com.example.E_com.entity.ProductImage;
 import com.example.E_com.exception.EntryNotFoundException;
 import com.example.E_com.repo.ProductRepository;
 import com.example.E_com.service.ProductService;
+import com.example.E_com.util.FileDataExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final FileDataExtractor fileDataExtractor;
 
     @Override
     public void create(RequestProductDto requestProductDto) {
@@ -57,6 +63,7 @@ public class ProductServiceImpl implements ProductService {
         product.setUnitPrice(requestProductDto.getUnitPrice());
         product.setQty(requestProductDto.getQty());
         product.setDescription(requestProductDto.getDescription());
+        product.setPropertyId(id);
 
         productRepository.save(product);
 
@@ -77,11 +84,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ResponseProductDto toResponseProductDto(Product product){
+        List<ResponseProductImageDto> productImages = product.getImages().stream().map(
+                this::toResponseProductImageDto
+        ).toList();
+
         return ResponseProductDto.builder()
                 .propertyId(product.getPropertyId())
                 .unitPrice(product.getUnitPrice())
                 .qty(product.getQty())
                 .description(product.getDescription())
+                .productImages(productImages)
+                .build();
+    }
+
+    private ResponseProductImageDto toResponseProductImageDto(ProductImage productImage){
+        return ResponseProductImageDto.builder()
+                .propertyId(productImage.getPropertyId())
+                .hash(fileDataExtractor.byteArrayToString(productImage.getHash()))
+                .directory(fileDataExtractor.byteArrayToString(productImage.getDirectory()))
+                .fileNme(fileDataExtractor.byteArrayToString(productImage.getFileNme()))
+                .resourceUrl(fileDataExtractor.byteArrayToString(productImage.getResourceUrl()))
                 .build();
     }
 }
