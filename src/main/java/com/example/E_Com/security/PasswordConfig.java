@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class PasswordConfig {
+    // when we assigned this 'PasswordEncoder' type for whenever, then
+    // automatically assign this 'BCryptPasswordEncoder' instance...
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(10);
