@@ -1,13 +1,12 @@
 package com.example.E_com.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Table( name = "user" )
 @Entity
@@ -40,4 +39,7 @@ public class User {
 
     @Column(name = "is_enabled", columnDefinition = "TINYINT")
     private boolean isEnabled;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserRoleHasUser> userRoleHasUsers;
 }

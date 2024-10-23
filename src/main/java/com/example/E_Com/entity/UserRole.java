@@ -1,13 +1,12 @@
 package com.example.E_com.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Table( name = "user_role" )
 @Entity
@@ -25,4 +24,8 @@ public class UserRole {
 
     @Column( name = "role_description", length = 200 )
     private String roleDescription;
+
+//  not given mapped data, only given if we requested.... -> FetchType.LAZY
+    @OneToMany(mappedBy = "userRole", fetch = FetchType.LAZY)
+    private Set<UserRoleHasUser> userRoleHasUsers;
 }
