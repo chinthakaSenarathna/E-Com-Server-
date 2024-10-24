@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.List;
 import java.util.Optional;
 
 @EnableJpaRepositories
@@ -15,4 +16,10 @@ public interface UserRoleRepository extends JpaRepository<UserRole, String> {
             nativeQuery = true
     )
     Optional<UserRole> findUserRoleByRoleName(String role);
+
+    @Query(
+            value = "SELECT * FROM user_role",
+            nativeQuery = true
+    )
+    List<UserRole> findAll();
 }
