@@ -86,10 +86,12 @@ public class ApplicationSecurityConfig {
 
     }
 
+    // use to get the database user...
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
+        // ApplicationUserServiceImpl, done login by using this class
         provider.setUserDetailsService(applicationUserService);
         return provider;
     }
