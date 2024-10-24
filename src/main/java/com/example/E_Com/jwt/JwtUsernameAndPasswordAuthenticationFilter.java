@@ -27,11 +27,10 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Autowired
     public JwtUsernameAndPasswordAuthenticationFilter(
             AuthenticationManager authenticationManager,
-            AuthenticationManager authenticationManager1,
             JwtConfig jwtConfig,
             SecretKey secretKey) {
         super(authenticationManager);
-        this.authenticationManager = authenticationManager1;
+        this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.secretKey = secretKey;
     }
