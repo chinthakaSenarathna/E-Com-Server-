@@ -1,5 +1,6 @@
 package com.example.E_com.adviser;
 
+import com.example.E_com.exception.DuplicateEntryException;
 import com.example.E_com.exception.EntryNotFoundException;
 import com.example.E_com.exception.ProductNotAvailableException;
 import com.example.E_com.util.StandardResponse;
@@ -19,10 +20,19 @@ public class AppWideExceptionHandler {
         );
     }
 
+    @ExceptionHandler( ProductNotAvailableException.class )
     public ResponseEntity<StandardResponse> handleProductNotAvailableException(ProductNotAvailableException productNotAvailableException){
         return new ResponseEntity<>(
                 new StandardResponse(400, productNotAvailableException.getMessage(), productNotAvailableException),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler( DuplicateEntryException.class )
+    public ResponseEntity<StandardResponse> handleDuplicateEntryException(DuplicateEntryException duplicateEntryException){
+        return new ResponseEntity<>(
+                new StandardResponse(409, duplicateEntryException.getMessage(), duplicateEntryException),
+                HttpStatus.CONFLICT
         );
     }
 }
