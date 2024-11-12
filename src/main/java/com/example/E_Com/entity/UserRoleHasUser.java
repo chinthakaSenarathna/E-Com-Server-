@@ -11,16 +11,16 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserRoleHasUser {
-    @EmbeddedId
+    @EmbeddedId // composite key represent...
     private UserRoleHasUserId userRoleHasUserId = new UserRoleHasUserId();
 
     @ManyToOne
-    @MapsId("user")
+    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @MapsId("userRole")
+    @MapsId("roleId")
     @JoinColumn(name = "role_id", nullable = false)
     private UserRole userRole;
 }
