@@ -5,6 +5,7 @@ import com.example.E_com.dto.request.RequestUserRoleDto;
 import com.example.E_com.entity.User;
 import com.example.E_com.entity.UserRole;
 import com.example.E_com.entity.UserRoleHasUser;
+import com.example.E_com.entity.UserRoleHasUserId;
 import com.example.E_com.exception.DuplicateEntryException;
 import com.example.E_com.exception.EntryNotFoundException;
 import com.example.E_com.repo.UserRepository;
@@ -54,7 +55,12 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        UserRoleHasUser userRoleHasUser = UserRoleHasUser.builder()
+        UserRoleHasUserId userRoleHasUserId = new UserRoleHasUserId();
+        userRoleHasUserId.setUserId(user.getUserId());
+        userRoleHasUserId.setRoleId(userRole.get().getRoleId());
+
+        UserRoleHasUser userRoleHasUser =  UserRoleHasUser.builder()
+                .userRoleHasUserId(userRoleHasUserId)
                 .user(user)
                 .userRole(userRole.get())
                 .build();

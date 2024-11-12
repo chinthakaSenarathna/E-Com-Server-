@@ -75,9 +75,7 @@ public class ApplicationSecurityConfig {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(http), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifire(jwtConfig, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                // without the token can access...
-                                "/api/v1/user/register/**")
+                        .requestMatchers("/api/v1/users/visitor/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated());
